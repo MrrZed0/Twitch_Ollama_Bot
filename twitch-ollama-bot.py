@@ -150,4 +150,38 @@ async def setup_eventsub():
             {"type": "channel.follow", "version": "2"},
             {"type": "channel.subscribe", "version": "1"},
             {"type": "channel.subscription.gift", "version": "1"},
-            {"type": "chan
+            {"type": "channel.cheer", "version": "1"},
+        ]
+
+        for topic in topics:
+            payload = {
+                "type": topic["type"],
+                "version": topic["version"],
+                "condition": {
+                    "broadcaster_user_login": TWITCH_CHANNEL
+                },
+                "transport": {
+                    "method": "webhook",
+                    "callback": f"{NGROK_URL}/eventsub/callback",
+                    "secret": EVENTSUB_SECRET
+                }
+            }
+            sub_resp = await session.post("https://api.twitch.tv/helix/eventsub/subscriptions", headers=headers, data=json.dumps(payload))
+            result = await sub_resp.text()
+            print(f"Subscribed to {topic['type']} — {result}")
+
+# -------------- STARTUP --------------
+def start_fastapi():
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+
+if __name__ == "__main__":
+    # Start FastAPI in a separate thread
+    threading.Thread(target=start_fastapi, daemon=True).start()
+
+    # Async setup of EventSub
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(setup_eventsub())
+
+    # Start Twitch bot
+    bot = TwitchBot()
+    bot.run()
