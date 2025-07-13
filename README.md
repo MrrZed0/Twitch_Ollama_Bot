@@ -51,3 +51,35 @@ Use the HTTPS URL from ngrok (e.g. https://abc123.ngrok.io) in Twitch.
 - React to follows, subs, gifts, and bits with hype messages
 
 - Work with Ollama locally
+
+___________________________________________________________________________________________
+# Twitch Ollama Bot Connected With Streamer.bot
+
+Python Script: Twitch + Ollama + EventSub + Streamer.bot Integration
+
+# This script connects:
+- Twitch chat (via TwitchIO)
+- Ollama AI (local model for chat responses)
+- Twitch EventSub (for follows, subs, bits)
+- Streamer.bot WebSocket (to send alerts)
+
+  
+# Streamer.bot Setup Script (WebSocket Listener)
+
+# In Streamer.bot:
+
+- Go to Actions → Create new Action → call it: TwitchAlert
+
+- Add a Sub-Action → Text to Speech or Show on Stream or OBS source etc.
+
+- Use these variable references:
+
+`{args.type} → "follow", "sub", "bits", "gift"`
+
+`{args.user} → Twitch username`
+
+# Example: TTS Message
+
+In Text to Speech:
+`{args.user} just {if:{args.type} == "sub":subscribed}{if:{args.type} == "follow":followed}{if:{args.type} == "gift":gifted a sub}{if:{args.type} == "bits":dropped bits}! Let's go!`
+
