@@ -80,6 +80,10 @@ Python Script: Twitch + Ollama + EventSub + Streamer.bot Integration
 
 # Example: TTS Message
 
+
+### 🙌 Credits
+- Created by MrrZed0
+- Uses the Twitch Helix API
 In Text to Speech:
 `{args.user} just {if:{args.type} == "sub":subscribed}{if:{args.type} == "follow":followed}{if:{args.type} == "gift":gifted a sub}{if:{args.type} == "bits":dropped bits}! Let's go!`
 
